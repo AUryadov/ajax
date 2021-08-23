@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Ajax 2 - JSON</title>
+    </head>
+    <body>
+        <button id="btn">Get user</button>
+        <br />
+        <button id="btn2">Get users</button>
+        <br />
+        <div id="user"></div>
+        <div id="users"></div>
+
+        <script>
+            document.getElementById("btn").addEventListener("click", loadUser);
+
+            function loadUser() {
+                const xhr = new XMLHttpRequest();
+
+                xhr.open("GET", "user.json");
+
+                xhr.onload = function () {
+                    const user = JSON.parse(xhr.response);
+
+                    const userDiv = document.getElementById("user");
+
+                    let output = `
+                        <ul>
+                            <li>Name: ${user.name}</li>
+                            <li>Email: ${user.email}</li>
+                            <li>Age: ${user.age}</li>
+                        </ul>
+                    `;
+
+                    userDiv.innerHTML = output;
+                };
+
+                xhr.send();
+            }
+
+            document
+                .getElementById("btn2")
+                .addEventListener("click", loadUsers);
+
+            function loadUsers() {
+                const xhr = new XMLHttpRequest();
+
+                xhr.open("GET", "users.json");
+
+                xhr.onload = function () {
+                    const users = JSON.parse(xhr.response);
+
+                    let output = "";
+                    for (let user of users) {
+                        output += `
+                            <ul>
+                                <li>Name: ${user.name}</li>    
+                                <li>Email: ${user.email}</li>    
+                                <li>Age: ${user.age}</li>    
+                            </ul>
+                            <hr>
+                        `;
+                    }
+
+                    document.getElementById("users").innerHTML = output;
+                };
+
+                xhr.send();
+            }
+        </script>
+    </body>
+</html>
